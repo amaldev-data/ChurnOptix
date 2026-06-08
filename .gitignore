@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+.ipynb_checkpoints/
+
+*.pkl
+*.joblib
+
+mlruns/
+
+.env
+
+.DS_Store
