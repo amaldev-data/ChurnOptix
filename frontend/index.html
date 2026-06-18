@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurnOptix AI | Enterprise Telecom Retention Intelligence</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Splash Loader -->
+    <div id="app-splash-loader" class="app-splash-loader">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <svg width="64" height="64" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="url(#splash-brand-grad)" />
+                    <path d="M9 19C10.5 15.5 13 14 16.5 14C20 14 21.5 16 23 20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M12 24C12.8284 24 13.5 23.3284 13.5 22.5C13.5 21.6716 12.8284 21 12 21C11.1716 21 10.5 21.6716 10.5 22.5C10.5 23.3284 11.1716 24 12 24Z" fill="white"/>
+                    <path d="M20 12C20.8284 12 21.5 11.3284 21.5 10.5C21.5 9.67157 20.8284 9 20 9C19.1716 9 18.5 9.67157 18.5 10.5C18.5 11.3284 19.1716 12 20 12Z" fill="white"/>
+                    <path d="M10 10.5L22 21.5" stroke="white" stroke-width="2" stroke-dasharray="3 3"/>
+                    <defs>
+                        <linearGradient id="splash-brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#4F46E5" />
+                            <stop offset="1" stop-color="#06B6D4" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1 class="splash-title">ChurnOptix <span class="splash-accent">AI</span></h1>
+            <p class="splash-status" id="splash-status-text">Initializing Retention Intelligence Engine...</p>
+            <div class="splash-progress-track">
+                <div class="splash-progress-fill" id="splash-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
+                        <path d="M9 19C10.5 15.5 13 14 16.5 14C20 14 21.5 16 23 20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M12 24C12.8284 24 13.5 23.3284 13.5 22.5C13.5 21.6716 12.8284 21 12 21C11.1716 21 10.5 21.6716 10.5 22.5C10.5 23.3284 11.1716 24 12 24Z" fill="white"/>
+                        <path d="M20 12C20.8284 12 21.5 11.3284 21.5 10.5C21.5 9.67157 20.8284 9 20 9C19.1716 9 18.5 9.67157 18.5 10.5C18.5 11.3284 19.1716 12 20 12Z" fill="white"/>
+                        <path d="M10 10.5L22 21.5" stroke="white" stroke-width="2" stroke-dasharray="3 3"/>
+                        <defs>
+                            <linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#4F46E5" />
+                                <stop offset="1" stop-color="#06B6D4" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="brand-text">ChurnOptix <span class="brand-sub">AI</span></span>
+                <button class="toggle-sidebar" id="toggle-sidebar-btn" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-chevron-left" id="sidebar-toggle-icon"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="view-hero">
+                    <i class="fa-solid fa-gauge-high"></i> <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" data-target="view-predict">
+                    <i class="fa-solid fa-brain"></i> <span>Predict Churn</span>
+                </a>
+                <a href="#" class="nav-item" data-target="view-analytics">
+                    <i class="fa-solid fa-chart-pie"></i> <span>Deep Analytics</span>
+                </a>
+                <a href="#" class="nav-item" data-target="view-history">
+                    <i class="fa-solid fa-list-check"></i> <span>Prediction History</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" data-target="view-settings">
+                    <i class="fa-solid fa-sliders"></i> <span>Settings</span>
+                </a>
+                <div class="connection-pill">
+                    <span class="pulse-indicator status-online" id="api-status-dot"></span>
+                    <span class="connection-text" id="api-status-text">Connected</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Sticky Navbar -->
+            <header class="top-navbar">
+                <div class="nav-left">
+                    <button class="mobile-nav-toggle" id="mobile-nav-toggle-btn" aria-label="Open Navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb-container">
+                        <span class="breadcrumb-root">Platform</span>
+                        <i class="fa-solid fa-chevron-right separator"></i>
+                        <span class="breadcrumb-active" id="current-view-title">Dashboard</span>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <button class="theme-toggle" id="theme-toggle" title="Toggle Dark/Light Mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <div class="notification-bell">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge-dot"></span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar-container">
+                            <img src="https://ui-avatars.com/api/?name=Churn+Analyst&background=4F46E5&color=fff&bold=true" alt="User Avatar">
+                            <span class="avatar-status"></span>
+                        </div>
+                        <div class="user-meta">
+                            <span class="user-name">Telecom Analyst</span>
+                            <span class="user-role">Enterprise Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Views Container (Scrollable internally) -->
+            <div class="view-container">
+                
+                <!-- 1. LANDING / HERO VIEW -->
+                <section id="view-hero" class="view-section active">
+                    <div class="hero-layout">
+                        <div class="hero-left">
+                            <div class="badge-pill">
+                                <span class="sparkle-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                                <span class="badge-pill-text">Enterprise Predictive Engine Active</span>
+                            </div>
+                            <h1 class="hero-title">Predict Customer Churn <br><span class="gradient-text">Before It Happens</span></h1>
+                            <p class="hero-subtitle">AI-powered telecom retention intelligence platform designed to identify churn risks, analyze customer behavior, and improve retention strategies.</p>
+                            <div class="hero-actions">
+                                <button class="btn btn-primary btn-lg btn-glow" onclick="app.navigate('view-predict')">
+                                    <i class="fa-solid fa-rocket"></i> Start Prediction
+                                </button>
+                                <button class="btn btn-outline btn-lg" onclick="app.navigate('view-analytics')">
+                                    <i class="fa-solid fa-chart-line"></i> View Analytics
+                                </button>
+                            </div>
+                            
+                            <!-- Floating KPI Row in Hero for SaaS Feel -->
+                            <div class="hero-kpi-grid">
+                                <div class="hero-kpi-card">
+                                    <span class="kpi-card-title">Retained Revenue</span>
+                                    <span class="kpi-card-val">$1.2M</span>
+                                    <span class="kpi-card-change pos"><i class="fa-solid fa-arrow-trend-up"></i> +14.2%</span>
+                                </div>
+                                <div class="hero-kpi-card">
+                                    <span class="kpi-card-title">Active Risk Monitored</span>
+                                    <span class="kpi-card-val">849</span>
+                                    <span class="kpi-card-change neg"><i class="fa-solid fa-arrow-trend-down"></i> -6.8%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-right">
+                            <!-- Premium SVG SaaS Illustration -->
+                            <div class="saas-illustration-container">
+                                <div class="illustration-glow"></div>
+                                <div class="glass-mockup">
+                                    <div class="mockup-chrome">
+                                        <div class="chrome-dot red"></div>
+                                        <div class="chrome-dot yellow"></div>
+                                        <div class="chrome-dot green"></div>
+                                        <div class="chrome-title"><i class="fa-solid fa-shield-halved"></i> Churn Analyzer - Customer Overview</div>
+                                    </div>
+                                    <div class="mockup-content">
+                                        <div class="mockup-row">
+                                            <div class="mockup-card risk-alert pulse-border">
+                                                <div class="mockup-card-header">
+                                                    <span class="m-status-pill badge-danger-soft">High Churn Risk</span>
+                                                    <span class="m-cust-id">#CUST-9824</span>
+                                                </div>
+                                                <div class="mockup-card-body">
+                                                    <div class="m-detail">Monthly charges: <strong>$104.85</strong></div>
+                                                    <div class="m-detail">Fiber optic & month-to-month</div>
+                                                </div>
+                                            </div>
+                                            <div class="mockup-card mini-kpi">
+                                                <span class="mini-kpi-title">Accuracy Rate</span>
+                                                <span class="mini-kpi-val">95.8%</span>
+                                                <div class="mini-progress-bar">
+                                                    <div class="mini-progress-fill" style="width: 95.8%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- SVG Line Chart Mockup -->
+                                        <div class="mockup-chart">
+                                            <svg viewBox="0 0 400 150" class="svg-graph">
+                                                <defs>
+                                                    <linearGradient id="chart-area-grad" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="0%" stop-color="rgba(79, 70, 229, 0.4)" />
+                                                        <stop offset="100%" stop-color="rgba(79, 70, 229, 0)" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <path d="M 0 130 C 50 110, 80 140, 130 90 C 180 40, 230 110, 280 60 C 330 10, 370 40, 400 20 L 400 150 L 0 150 Z" fill="url(#chart-area-grad)"/>
+                                                <path d="M 0 130 C 50 110, 80 140, 130 90 C 180 40, 230 110, 280 60 C 330 10, 370 40, 400 20" fill="none" stroke="#4F46E5" stroke-width="3" stroke-linecap="round"/>
+                                                <!-- Floating indicators on SVG -->
+                                                <circle cx="280" cy="60" r="5" fill="#4F46E5" stroke="#FFFFFF" stroke-width="2"/>
+                                                <circle cx="130" cy="90" r="5" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2"/>
+                                            </svg>
+                                        </div>
+                                        
+                                        <div class="mockup-row footer-row">
+                                            <div class="mock-pill"><i class="fa-solid fa-microchip"></i> XGBoost-2 v4</div>
+                                            <div class="mock-pill"><i class="fa-solid fa-server"></i> FastAPI: 1.0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Floating KPI cards around mockup -->
+                                <div class="floating-card c1">
+                                    <div class="f-icon bg-blue-soft"><i class="fa-solid fa-mobile-screen"></i></div>
+                                    <div class="f-meta">
+                                        <span class="f-title">Churn Probability</span>
+                                        <span class="f-val">84.2%</span>
+                                    </div>
+                                </div>
+                                <div class="floating-card c2">
+                                    <div class="f-icon bg-green-soft"><i class="fa-solid fa-rotate"></i></div>
+                                    <div class="f-meta">
+                                        <span class="f-title">Action Status</span>
+                                        <span class="f-val text-success">Offer Sent</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. PREDICT CHURN VIEW -->
+                <section id="view-predict" class="view-section">
+                    <!-- Step-State 1: Input Form -->
+                    <div id="predict-form-container" class="phase-container active-phase">
+                        <div class="section-header-row">
+                            <div class="section-header">
+                                <h3>Telemetry Ingestion</h3>
+                                <p>Input customer demographic and usage variables to invoke retention risk predictions.</p>
+                            </div>
+                            <div class="header-actions">
+                                <button class="btn btn-outline btn-sm" type="button" id="btn-load-sample" title="Populate form fields with high-risk sample data">
+                                    <i class="fa-solid fa-database"></i> Load Churn Sample
+                                </button>
+                                <button class="btn btn-outline btn-sm" type="button" id="btn-load-safe-sample" title="Populate form fields with safe sample data">
+                                    <i class="fa-solid fa-shield-halved"></i> Load Loyal Sample
+                                </button>
+                            </div>
+                        </div>
+
+                        <form id="churn-form" class="enterprise-form" novalidate>
+                            <div class="form-grid-layout">
+                                <!-- Card 1: Customer Profile -->
+                                <div class="form-card">
+                                    <div class="form-card-header">
+                                        <div class="form-card-icon"><i class="fa-regular fa-user"></i></div>
+                                        <h4 class="form-card-title">Customer Profile</h4>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-group floating">
+                                            <select id="gender" name="gender" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <label for="gender">Gender</label>
+                                            <span class="error-msg">Please select gender.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="SeniorCitizen" name="SeniorCitizen" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="0">No (Under 65)</option>
+                                                <option value="1">Yes (Senior Citizen)</option>
+                                            </select>
+                                            <label for="SeniorCitizen">Senior Citizen Status</label>
+                                            <span class="error-msg">Select Senior status.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="Partner" name="Partner" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            <label for="Partner">Has Partner</label>
+                                            <span class="error-msg">Please select Partner.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="Dependents" name="Dependents" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            <label for="Dependents">Has Dependents</label>
+                                            <span class="error-msg">Please select Dependents.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: Contract Information -->
+                                <div class="form-card">
+                                    <div class="form-card-header">
+                                        <div class="form-card-icon"><i class="fa-solid fa-file-signature"></i></div>
+                                        <h4 class="form-card-title">Contract Information</h4>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-group floating">
+                                            <select id="Contract" name="Contract" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Month-to-month">Month-to-month</option>
+                                                <option value="One year">One year</option>
+                                                <option value="Two year">Two year</option>
+                                            </select>
+                                            <label for="Contract">Contract Duration</label>
+                                            <span class="error-msg">Select Contract Type.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="PaperlessBilling" name="PaperlessBilling" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            <label for="PaperlessBilling">Paperless Billing</label>
+                                            <span class="error-msg">Select Billing Type.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="PaymentMethod" name="PaymentMethod" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Electronic check">Electronic Check</option>
+                                                <option value="Mailed check">Mailed Check</option>
+                                                <option value="Bank transfer (automatic)">Bank Transfer (Auto)</option>
+                                                <option value="Credit card (automatic)">Credit Card (Auto)</option>
+                                            </select>
+                                            <label for="PaymentMethod">Payment System</label>
+                                            <span class="error-msg">Select Payment Method.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <input type="number" id="tenure" name="tenure" required min="0" max="100" placeholder=" ">
+                                            <label for="tenure">Tenure (Months)</label>
+                                            <span class="error-msg">Enter tenure (0-100).</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: Service Subscriptions -->
+                                <div class="form-card service-card">
+                                    <div class="form-card-header">
+                                        <div class="form-card-icon"><i class="fa-solid fa-server"></i></div>
+                                        <h4 class="form-card-title">Service Details</h4>
+                                    </div>
+                                    <div class="input-grid triple">
+                                        <div class="input-group floating">
+                                            <select id="PhoneService" name="PhoneService" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            <label for="PhoneService">Phone Service</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="MultipleLines" name="MultipleLines" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="No">No</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No phone service">No Phone Service</option>
+                                            </select>
+                                            <label for="MultipleLines">Multiple Phone Lines</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="InternetService" name="InternetService" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Fiber optic">Fiber Optic</option>
+                                                <option value="DSL">DSL</option>
+                                                <option value="No">No Internet Service</option>
+                                            </select>
+                                            <label for="InternetService">Internet Service Type</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="OnlineSecurity" name="OnlineSecurity" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                                <option value="No internet service">No Internet Service</option>
+                                            </select>
+                                            <label for="OnlineSecurity">Cybersecurity Add-on</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="OnlineBackup" name="OnlineBackup" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                                <option value="No internet service">No Internet Service</option>
+                                            </select>
+                                            <label for="OnlineBackup">Cloud Storage Backup</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="DeviceProtection" name="DeviceProtection" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                                <option value="No internet service">No Internet Service</option>
+                                            </select>
+                                            <label for="DeviceProtection">Device Protection Plan</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="TechSupport" name="TechSupport" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                                <option value="No internet service">No Internet Service</option>
+                                            </select>
+                                            <label for="TechSupport">Priority Tech Support</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="StreamingTV" name="StreamingTV" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                                <option value="No internet service">No Internet Service</option>
+                                            </select>
+                                            <label for="StreamingTV">Streaming TV Subscription</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                        <div class="input-group floating">
+                                            <select id="StreamingMovies" name="StreamingMovies" required>
+                                                <option value="" disabled selected></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                                <option value="No internet service">No Internet Service</option>
+                                            </select>
+                                            <label for="StreamingMovies">Streaming Movies Pack</label>
+                                            <span class="error-msg">Required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 4: Billing Information -->
+                                <div class="form-card">
+                                    <div class="form-card-header">
+                                        <div class="form-card-icon"><i class="fa-solid fa-receipt"></i></div>
+                                        <h4 class="form-card-title">Billing Details</h4>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-group floating">
+                                            <input type="number" step="0.01" min="0" max="300" id="MonthlyCharges" name="MonthlyCharges" required placeholder=" ">
+                                            <label for="MonthlyCharges">Monthly Charge Amount ($)</label>
+                                            <span class="error-msg">Enter charges (0-300).</span>
+                                        </div>
+                                        <div class="input-group floating select-with-btn">
+                                            <input type="number" step="0.01" min="0" max="20000" id="TotalCharges" name="TotalCharges" required placeholder=" ">
+                                            <label for="TotalCharges">Cumulative Total Charges ($)</label>
+                                            <button class="estimate-btn" type="button" id="btn-estimate-total" title="Estimate total charges based on tenure & monthly charges">
+                                                <i class="fa-solid fa-calculator"></i>
+                                            </button>
+                                            <span class="error-msg">Enter cumulative charges.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions-bottom">
+                                <button type="button" class="btn btn-outline" id="btn-reset-form"><i class="fa-solid fa-arrow-rotate-right"></i> Reset Variables</button>
+                                <button type="submit" class="btn btn-primary btn-glow"><i class="fa-solid fa-microchip"></i> Invoke Prediction Engine</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step-State 2: Holographic Processing Workflow Overlay -->
+                    <div id="predict-processing-container" class="phase-container">
+                        <div class="ai-processing-box">
+                            <div class="ai-hologram-wrapper">
+                                <div class="loader-ring outer"></div>
+                                <div class="loader-ring middle"></div>
+                                <div class="loader-ring inner"></div>
+                                <div class="loader-core"><i class="fa-solid fa-brain"></i></div>
+                            </div>
+                            <h2 id="ai-process-text" class="processing-title">Validating Customer Data</h2>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="ai-progress-bar"></div>
+                            </div>
+                            <ul class="process-steps">
+                                <li id="step-1" class="pending"><span class="step-num">1</span> <span class="step-label">Validating Customer Data</span></li>
+                                <li id="step-2" class="pending"><span class="step-num">2</span> <span class="step-label">Analyzing Churn Signals</span></li>
+                                <li id="step-3" class="pending"><span class="step-num">3</span> <span class="step-label">Running Machine Learning Model</span></li>
+                                <li id="step-4" class="pending"><span class="step-num">4</span> <span class="step-label">Calculating Risk Score</span></li>
+                                <li id="step-5" class="pending"><span class="step-num">5</span> <span class="step-label">Generating Recommendations</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Step-State 3: Results Dashboard -->
+                    <div id="predict-results-container" class="phase-container">
+                        <div class="results-header">
+                            <button class="btn btn-icon-text" id="btn-back-to-predict"><i class="fa-solid fa-arrow-left"></i> Run Another Prediction</button>
+                            <div class="results-meta-badges">
+                                <span class="badge-tag" id="res-timestamp">Inference: 11:58 AM</span>
+                                <span class="badge-tag" id="res-client-id">Virtual ID: CUST-7241</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Results Grid -->
+                        <div class="results-grid">
+                            
+                            <!-- Gauge Card -->
+                            <div class="res-card hero-res-card">
+                                <span class="card-section-label">Churn Risk Assessment</span>
+                                
+                                <div class="gauge-meter-wrapper">
+                                    <div class="gauge-body">
+                                        <div class="gauge-fill-arc" id="gauge-fill-arc"></div>
+                                        <div class="gauge-needle" id="gauge-needle"></div>
+                                        <div class="gauge-labels">
+                                            <span class="g-lbl low">Low</span>
+                                            <span class="g-lbl med">Medium</span>
+                                            <span class="g-lbl high">High</span>
+                                        </div>
+                                    </div>
+                                    <div class="gauge-value-overlay">
+                                        <span class="score-val" id="res-prob">0</span>
+                                        <span class="score-percentage">%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="risk-badge" id="res-badge">LOW RISK</div>
+                                <span class="verdict-label" id="res-verdict">Likely to Stay</span>
+                            </div>
+
+                            <!-- Key Metrics Row -->
+                            <div class="res-kpi-column">
+                                <div class="res-card kpi-tile">
+                                    <div class="tile-icon bg-indigo-soft"><i class="fa-solid fa-bullseye"></i></div>
+                                    <div class="tile-content">
+                                        <h5>Model Confidence</h5>
+                                        <h3 id="res-confidence">97.8%</h3>
+                                        <span class="tile-subtext">Statistical correctness likelihood</span>
+                                    </div>
+                                </div>
+                                <div class="res-card kpi-tile">
+                                    <div class="tile-icon bg-red-soft"><i class="fa-solid fa-wallet"></i></div>
+                                    <div class="tile-content">
+                                        <h5>Revenue Risk Exposure</h5>
+                                        <h3 id="res-revenue">$89.00</h3>
+                                        <span class="tile-subtext">Active contract monthly charge</span>
+                                    </div>
+                                </div>
+                                <div class="res-card kpi-tile">
+                                    <div class="tile-icon bg-cyan-soft"><i class="fa-solid fa-calendar-day"></i></div>
+                                    <div class="tile-content">
+                                        <h5>Customer Tenure</h5>
+                                        <h3 id="res-tenure-display">24 Months</h3>
+                                        <span class="tile-subtext">Duration of subscriber relationship</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Insights Card -->
+                            <div class="res-card full-width">
+                                <div class="insights-panel-header">
+                                    <div class="insights-panel-icon"><i class="fa-solid fa-lightbulb text-warning"></i></div>
+                                    <h4 class="insights-panel-title">Customer Analytics Insights</h4>
+                                </div>
+                                
+                                <div class="insights-grid-sub">
+                                    <div class="insight-row">
+                                        <span class="insight-row-title">Contract Risk</span>
+                                        <p class="insight-row-body" id="insight-contract-risk">Analyzing factors...</p>
+                                    </div>
+                                    <div class="insight-row">
+                                        <span class="insight-row-title">Financial Profile</span>
+                                        <p class="insight-row-body" id="insight-financial-risk">Analyzing charges...</p>
+                                    </div>
+                                    <div class="insight-row">
+                                        <span class="insight-row-title">Support Risk</span>
+                                        <p class="insight-row-body" id="insight-support-risk">Analyzing service records...</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="retention-actions-box">
+                                    <div class="actions-box-header">
+                                        <i class="fa-solid fa-shield-cat text-primary"></i>
+                                        <h5>Suggested Retention Playbook</h5>
+                                    </div>
+                                    <ul class="retention-actions-list" id="res-actions">
+                                        <!-- Actions inserted dynamically -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. DEEP ANALYTICS VIEW -->
+                <section id="view-analytics" class="view-section">
+                    <div class="section-header-row">
+                        <div class="section-header">
+                            <h3>Analytics Dashboard</h3>
+                            <p>Aggregated customer data distributions, risk categories, and prediction models.</p>
+                        </div>
+                        <div class="header-actions">
+                            <span class="analytics-updated-pill"><i class="fa-solid fa-circle-check"></i> Real-time Sync Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Small KPI Row in Analytics -->
+                    <div class="analytics-kpi-row">
+                        <div class="kpi-micro-card">
+                            <span class="kpi-micro-lbl">Total Audits</span>
+                            <span class="kpi-micro-val" id="analytics-stat-total">0</span>
+                        </div>
+                        <div class="kpi-micro-card">
+                            <span class="kpi-micro-lbl">High Risk Cases</span>
+                            <span class="kpi-micro-val text-danger" id="analytics-stat-high">0</span>
+                        </div>
+                        <div class="kpi-micro-card">
+                            <span class="kpi-micro-lbl">Median Churn Probability</span>
+                            <span class="kpi-micro-val" id="analytics-stat-median">0.0%</span>
+                        </div>
+                        <div class="kpi-micro-card font-glow">
+                            <span class="kpi-micro-lbl text-primary">Est. Managed Revenue</span>
+                            <span class="kpi-micro-val text-primary" id="analytics-stat-revenue">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h4>Churn Verdict Distribution</h4>
+                                <span class="chart-tooltip-help" title="Model classifications between Churn (Risk > 50%) and Retain."><i class="fa-solid fa-circle-info"></i></span>
+                            </div>
+                            <div class="canvas-wrapper"><canvas id="chart-distribution"></canvas></div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h4>Risk Level Breakdown</h4>
+                                <span class="chart-tooltip-help" title="Segments records by Risk Levels (Low < 40%, Medium 40-70%, High >= 70%)"><i class="fa-solid fa-circle-info"></i></span>
+                            </div>
+                            <div class="canvas-wrapper"><canvas id="chart-risk-breakdown"></canvas></div>
+                        </div>
+
+                        <div class="chart-card full-span">
+                            <div class="chart-card-header">
+                                <h4>Prediction Probability Trend</h4>
+                                <span class="chart-tooltip-help" title="Tracks model risk output values across chronologically ordered predictions"><i class="fa-solid fa-circle-info"></i></span>
+                            </div>
+                            <div class="canvas-wrapper"><canvas id="chart-trend"></canvas></div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h4>Churn Probability vs Contract Type</h4>
+                                <span class="chart-tooltip-help" title="Aggregated average churn risk across Monthly vs Annual billing cycles"><i class="fa-solid fa-circle-info"></i></span>
+                            </div>
+                            <div class="canvas-wrapper"><canvas id="chart-contracts"></canvas></div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h4>Internet Service Segments</h4>
+                                <span class="chart-tooltip-help" title="Correlation of high-risk cases versus specific connection styles"><i class="fa-solid fa-circle-info"></i></span>
+                            </div>
+                            <div class="canvas-wrapper"><canvas id="chart-internet"></canvas></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. PREDICTION LOGS VIEW -->
+                <section id="view-history" class="view-section">
+                    <div class="section-header-row">
+                        <div class="section-header">
+                            <h3>Prediction Logs</h3>
+                            <p>Complete historical database of neural network inferences and predictive parameters.</p>
+                        </div>
+                        <div class="header-actions flex-gap">
+                            <!-- Export Buttons -->
+                            <div class="dropdown-wrapper">
+                                <button class="btn btn-outline btn-sm dropdown-trigger" id="export-dropdown-btn">
+                                    <i class="fa-solid fa-download"></i> Export Data <i class="fa-solid fa-chevron-down caret"></i>
+                                </button>
+                                <div class="dropdown-menu" id="export-dropdown-menu">
+                                    <a href="#" class="dropdown-item" id="btn-export-csv"><i class="fa-solid fa-file-csv"></i> Download CSV</a>
+                                    <a href="#" class="dropdown-item" id="btn-export-json"><i class="fa-solid fa-file-code"></i> Download JSON</a>
+                                    <a href="#" class="dropdown-item" id="btn-export-xls"><i class="fa-solid fa-file-excel"></i> Download Excel (XLS)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <!-- Table Filter and Search Panel -->
+                        <div class="table-controls">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="history-search" placeholder="Search by Customer ID or Contract...">
+                            </div>
+                            <div class="filter-actions">
+                                <select id="history-filter-risk" class="filter-select">
+                                    <option value="all">All Risks</option>
+                                    <option value="High">High Risk</option>
+                                    <option value="Medium">Medium Risk</option>
+                                    <option value="Low">Low Risk</option>
+                                </select>
+                                <select id="history-filter-contract" class="filter-select">
+                                    <option value="all">All Contracts</option>
+                                    <option value="Month-to-month">Month-to-month</option>
+                                    <option value="One year">One year</option>
+                                    <option value="Two year">Two year</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Data Grid wrapper -->
+                        <div class="table-wrapper">
+                            <table class="enterprise-table" id="history-table">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" data-sort="date">Date & Time <i class="fa-solid fa-sort"></i></th>
+                                        <th class="sortable" data-sort="id">Customer ID <i class="fa-solid fa-sort"></i></th>
+                                        <th class="sortable" data-sort="probability">Probability <i class="fa-solid fa-sort"></i></th>
+                                        <th class="sortable" data-sort="risk">Risk Level <i class="fa-solid fa-sort"></i></th>
+                                        <th>Contract</th>
+                                        <th class="sortable" data-sort="revenue">Monthly Charges <i class="fa-solid fa-sort"></i></th>
+                                        <th class="table-action-col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-tbody">
+                                    <!-- Table rows inserted dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Table Pagination Footer -->
+                        <div class="table-pagination-footer">
+                            <div class="pagination-info">
+                                Showing <span id="pag-start-index">0</span>-<span id="pag-end-index">0</span> of <span id="pag-total-count">0</span> entries
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="btn btn-icon-only" id="btn-pag-prev" aria-label="Previous Page" disabled>
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <span class="page-numbers-container" id="page-num-buttons">
+                                    <!-- Dynamic button pages -->
+                                </span>
+                                <button class="btn btn-icon-only" id="btn-pag-next" aria-label="Next Page" disabled>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. SYSTEM SETTINGS VIEW -->
+                <section id="view-settings" class="view-section">
+                    <div class="section-header">
+                        <h3>System Settings</h3>
+                        <p>Configure model API variables, visual themes, and local storage state objects.</p>
+                    </div>
+
+                    <div class="settings-grid">
+                        <!-- Card 1: API Config -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                                <h4>Inference Pipeline Connection</h4>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="settings-form-group">
+                                    <label for="setting-api-url" class="settings-label">FastAPI Predict Endpoint URL</label>
+                                    <div class="input-with-action">
+                                        <input type="url" id="setting-api-url" class="standard-input" value="http://localhost:8000/predict">
+                                        <button class="btn btn-primary" id="btn-test-connection" type="button">Test API</button>
+                                    </div>
+                                    <span class="settings-help">The frontend will query this server URL to trigger predictions on the XGBoost classifier model.</span>
+                                </div>
+                                <div class="settings-api-status-banner warning" id="settings-status-banner">
+                                    <i class="fa-solid fa-circle-exclamation"></i> 
+                                    <span id="settings-status-banner-text">FastAPI server status unknown. Test connection.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Personalization & Themes -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon"><i class="fa-solid fa-brush"></i></div>
+                                <h4>Visual Settings</h4>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="settings-form-group">
+                                    <label class="settings-label">Platform Color Scheme</label>
+                                    <div class="theme-option-grid">
+                                        <div class="theme-box" id="theme-box-light" data-theme="light">
+                                            <div class="theme-box-preview light">
+                                                <div class="prev-sidebar"></div>
+                                                <div class="prev-main"></div>
+                                            </div>
+                                            <span class="theme-box-label">SaaS Light (Default)</span>
+                                        </div>
+                                        <div class="theme-box" id="theme-box-dark" data-theme="dark">
+                                            <div class="theme-box-preview dark">
+                                                <div class="prev-sidebar"></div>
+                                                <div class="prev-main"></div>
+                                            </div>
+                                            <span class="theme-box-label">Midnight Dark</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Storage Maintenance -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon"><i class="fa-solid fa-database"></i></div>
+                                <h4>Data Storage Maintenance</h4>
+                            </div>
+                            <div class="settings-card-body">
+                                <p class="storage-warning-text"><i class="fa-solid fa-triangle-exclamation"></i> Purging history logs resets the local database. This operation is permanent and deletes all records stored in browser `localStorage`.</p>
+                                <div class="db-stats-row">
+                                    <div class="db-stat-item">
+                                        <span class="db-stat-lbl">Record Count</span>
+                                        <strong id="db-stat-records">0</strong>
+                                    </div>
+                                    <div class="db-stat-item">
+                                        <span class="db-stat-lbl">Estimated Payload Size</span>
+                                        <strong id="db-stat-size">0 KB</strong>
+                                    </div>
+                                </div>
+                                <div class="settings-action-row">
+                                    <button class="btn btn-outline" id="btn-seed-logs"><i class="fa-solid fa-circle-nodes"></i> Seed Mock History</button>
+                                    <button class="btn btn-danger" id="btn-clear-history"><i class="fa-solid fa-trash-can"></i> Purge History Logs</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
