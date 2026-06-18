@@ -889,12 +889,10 @@ html, body {
 .floating-card.c1 {
     top: 25px;
     left: -20px;
-    animation: float1 5s ease-in-out infinite;
 }
 .floating-card.c2 {
     bottom: 30px;
     right: -10px;
-    animation: float2 6s ease-in-out infinite;
 }
 
 .f-icon {
@@ -1117,155 +1115,53 @@ html, body {
     gap: 16px;
 }
 
-/* 8. AI PROCESSING ANIMATION OVERLAY */
-.ai-processing-box {
-    max-width: 600px;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-xl);
-    margin: 60px auto;
-    padding: 48px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+
+
+/* Staggered Reveal Transitions for Results */
+.hero-res-card {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.results-grid.reveal-gauge .hero-res-card {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.ai-hologram-wrapper {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Risk Level */
+#res-badge, #res-verdict {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.loader-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid transparent;
-}
-.loader-ring.outer {
-    width: 100px;
-    height: 100px;
-    border-top-color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-    animation: rotateCW 2s linear infinite;
-}
-.loader-ring.middle {
-    width: 76px;
-    height: 76px;
-    border-left-color: var(--secondary-color);
-    border-right-color: var(--secondary-color);
-    animation: rotateCCW 1.5s linear infinite;
-}
-.loader-ring.inner {
-    width: 52px;
-    height: 52px;
-    border-top-color: var(--primary-color);
-    border-right-color: var(--secondary-color);
-    animation: rotateCW 1s linear infinite;
-}
-.loader-core {
-    font-size: 1.35rem;
-    color: var(--primary-color);
-    animation: hologramPulse 1.5s ease-in-out infinite alternate;
+.results-grid.reveal-risk #res-badge,
+.results-grid.reveal-risk #res-verdict {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-@keyframes rotateCW {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Insights (Metrics + Grid Headers/Content) */
+.res-kpi-column, .insights-panel-header, .insights-grid-sub {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-@keyframes rotateCCW {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(-360deg); }
-}
-@keyframes hologramPulse {
-    0% { transform: scale(0.9); opacity: 0.6; }
-    100% { transform: scale(1.15); opacity: 1; }
-}
-
-.processing-title {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    color: var(--text-main);
+.results-grid.reveal-insights .res-kpi-column,
+.results-grid.reveal-insights .insights-panel-header,
+.results-grid.reveal-insights .insights-grid-sub {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.progress-track {
-    width: 100%;
-    height: 8px;
-    background-color: var(--bg-base);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 36px;
-    border: 1px solid var(--border-color);
+/* Recommendations */
+.retention-actions-box {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.progress-fill {
-    width: 0%;
-    height: 100%;
-    background: var(--primary-color);
-    border-radius: 10px;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.process-steps {
-    list-style: none;
-    max-width: 380px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.process-steps li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    border: 1px solid transparent;
-    transition: var(--transition-fast);
-}
-
-.step-num {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border-color);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 700;
-}
-
-/* step states */
-.process-steps li.pending {
-    background-color: transparent;
-}
-.process-steps li.active {
-    color: var(--primary-color);
-    background-color: var(--primary-soft);
-    border-color: rgba(79, 70, 229, 0.15);
-}
-.process-steps li.active .step-num {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-.process-steps li.done {
-    color: var(--success-color);
-    background-color: var(--success-soft);
-    border-color: var(--success-border);
-}
-.process-steps li.done .step-num {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-    color: white;
+.results-grid.reveal-recommendations .retention-actions-box {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* 9. RESULTS VIEW DASHBOARD STYLE */
@@ -1338,7 +1234,7 @@ html, body {
     width: 100%;
     height: 200%;
     border-radius: 50%;
-    background: var(--bg-base);
+    background: var(--primary-soft);
     border: 1px solid var(--border-color);
     top: 0;
     left: 0;
@@ -1350,50 +1246,48 @@ html, body {
     border-radius: 50%;
     clip-path: polygon(0% 50%, 100% 50%, 100% 0%, 0% 0%); /* upper half clip */
     background: conic-gradient(from 180deg at 50% 50%, 
-        var(--success-color) 0deg 90deg, 
-        var(--warning-color) 90deg 140deg, 
-        var(--danger-color) 140deg 180deg
+        var(--success-color) 0%, 
+        var(--warning-color) 60%, 
+        var(--danger-color) 100%
     );
     transform: rotate(0deg);
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 /* Inner mask to make it a ring */
 .gauge-body::after {
     content: '';
     position: absolute;
-    width: 76%;
-    height: 76%;
+    width: 86%;
+    height: 86%;
     background-color: var(--bg-surface);
     border-radius: 50%;
-    top: 12%;
-    left: 12%;
+    top: 7%;
+    left: 7%;
     border: 1px solid var(--border-color);
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
 }
 
 .gauge-needle {
     position: absolute;
-    width: 4px;
-    height: 85px;
-    background-color: var(--text-main);
-    left: calc(50% - 2px);
-    top: 35px;
+    width: 8px;
+    height: 115px;
+    left: calc(50% - 4px);
+    top: 5px;
     transform-origin: bottom center;
-    border-radius: 4px;
     transform: rotate(-90deg); /* Left start */
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 10;
 }
 .gauge-needle::after {
     content: '';
     position: absolute;
-    width: 14px;
-    height: 14px;
-    background-color: var(--text-main);
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
     border-radius: 50%;
-    bottom: -6px;
-    left: -5px;
-    box-shadow: 0 0 6px rgba(0,0,0,0.25);
+    box-shadow: 0 0 10px rgba(79, 70, 229, 0.8);
 }
 
 .gauge-labels {
@@ -2283,7 +2177,6 @@ html, body {
 
 .splash-logo {
     margin-bottom: 20px;
-    animation: pulseLogo 2s infinite ease-in-out;
 }
 .splash-logo svg rect {
     fill: #ffffff;

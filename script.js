@@ -107,7 +107,6 @@ const app = {
 
         // Prediction view - Sub states
         this.formContainer = document.getElementById('predict-form-container');
-        this.processingContainer = document.getElementById('predict-processing-container');
         this.resultsContainer = document.getElementById('predict-results-container');
         
         // Form & Helpers
@@ -140,16 +139,7 @@ const app = {
             TotalCharges: document.getElementById('TotalCharges')
         };
 
-        // Loading steps
-        this.progressBar = document.getElementById('ai-progress-bar');
-        this.processTitleText = document.getElementById('ai-process-text');
-        this.processSteps = [
-            document.getElementById('step-1'),
-            document.getElementById('step-2'),
-            document.getElementById('step-3'),
-            document.getElementById('step-4'),
-            document.getElementById('step-5')
-        ];
+
 
         // Results elements
         this.btnBackToPredict = document.getElementById('btn-back-to-predict');
@@ -356,6 +346,10 @@ const app = {
         // Mobile sidebar collapse on navigation
         this.sidebar.classList.remove('open');
 
+        this.performViewSwitch(targetId);
+    },
+
+    performViewSwitch(targetId) {
         // Active state in sidebar navigation
         this.navItems.forEach(item => {
             if (item.dataset.target === targetId) {
@@ -650,30 +644,46 @@ const app = {
             TotalCharges: parseFloat(this.inputs.TotalCharges.value)
         };
 
-        // Transition: Hide Form -> Show Processing Screen
-        this.formContainer.classList.remove('active-phase');
-        this.processingContainer.classList.add('active-phase');
-
-        // Start asynchronous prediction API request concurrently during animation
-        const fetchPromise = this.triggerPredictionApi(payload);
-
-        // Sequence Churn processing workflow over exactly ~3 seconds
-        await this.animateProcessingWorkflow();
-
         let apiResult = null;
         try {
-            apiResult = await fetchPromise;
+            apiResult = await this.triggerPredictionApi(payload);
         } catch (error) {
             console.warn("FastAPI prediction error. Initiating simulated neural-inference fallback...");
             apiResult = this.computeSimulationInference(payload);
         }
 
+        // Hide Form and directly display Results Screen
+        this.formContainer.classList.remove('active-phase');
+        
         // Render Inferences in Results Dashboard
         this.renderPredictionResults(payload, apiResult);
-
-        // Transition: Hide Processing Screen -> Show Results Screen
-        this.processingContainer.classList.remove('active-phase');
+        
         this.resultsContainer.classList.add('active-phase');
+
+        // Reset classes for results stagger reveal
+        const resultsGrid = this.resultsContainer.querySelector('.results-grid');
+        resultsGrid.classList.remove('reveal-gauge', 'reveal-risk', 'reveal-insights', 'reveal-recommendations');
+        
+        // Force reflow
+        resultsGrid.offsetHeight;
+        
+        // Step 1: Load Gauge first
+        resultsGrid.classList.add('reveal-gauge');
+        
+        // Step 2: Show Risk Level after 600ms
+        setTimeout(() => {
+            resultsGrid.classList.add('reveal-risk');
+        }, 600);
+        
+        // Step 3: Show Insights after 1000ms
+        setTimeout(() => {
+            resultsGrid.classList.add('reveal-insights');
+        }, 1000);
+        
+        // Step 4: Show Recommendations after 1400ms
+        setTimeout(() => {
+            resultsGrid.classList.add('reveal-recommendations');
+        }, 1400);
     },
 
     async triggerPredictionApi(payload) {
@@ -728,33 +738,7 @@ const app = {
         };
     },
 
-    async animateProcessingWorkflow() {
-        const stepsCount = this.processSteps.length;
-        const totalDuration = 2800; // ms
-        const timePerStep = totalDuration / stepsCount;
 
-        // Reset elements
-        this.progressBar.style.width = '0%';
-        this.processSteps.forEach(li => {
-            li.className = 'pending';
-        });
-
-        for (let i = 0; i < stepsCount; i++) {
-            const li = this.processSteps[i];
-            const label = li.querySelector('.step-label').innerText;
-            
-            // Set active state
-            li.className = 'active';
-            this.processTitleText.innerText = label + '...';
-            this.progressBar.style.width = `${((i + 1) / stepsCount) * 100}%`;
-
-            // Active delay
-            await new Promise(resolve => setTimeout(resolve, timePerStep));
-
-            // Set completed state
-            li.className = 'done';
-        }
-    },
 
     // 11. RESULTS RENDERER & LOG SAVER
     renderPredictionResults(input, output) {
@@ -894,6 +878,10 @@ const app = {
 
     resetPredictModule() {
         this.resultsContainer.classList.remove('active-phase');
+        const resultsGrid = this.resultsContainer.querySelector('.results-grid');
+        if (resultsGrid) {
+            resultsGrid.classList.remove('reveal-gauge', 'reveal-risk', 'reveal-insights', 'reveal-recommendations');
+        }
         this.churnForm.reset();
         this.gaugeNeedle.style.transform = `rotate(-90deg)`;
         this.gaugeFillArc.style.transform = `rotate(0deg)`;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChurnOptix AI | Enterprise Telecom Retention Intelligence</title>
+    <link rel="icon" type="image/png" href="asset/logo.png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,22 +20,10 @@
     <div id="app-splash-loader" class="app-splash-loader">
         <div class="splash-content">
             <div class="splash-logo">
-                <svg width="64" height="64" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="32" height="32" rx="8" fill="url(#splash-brand-grad)" />
-                    <path d="M9 19C10.5 15.5 13 14 16.5 14C20 14 21.5 16 23 20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                    <path d="M12 24C12.8284 24 13.5 23.3284 13.5 22.5C13.5 21.6716 12.8284 21 12 21C11.1716 21 10.5 21.6716 10.5 22.5C10.5 23.3284 11.1716 24 12 24Z" fill="white"/>
-                    <path d="M20 12C20.8284 12 21.5 11.3284 21.5 10.5C21.5 9.67157 20.8284 9 20 9C19.1716 9 18.5 9.67157 18.5 10.5C18.5 11.3284 19.1716 12 20 12Z" fill="white"/>
-                    <path d="M10 10.5L22 21.5" stroke="white" stroke-width="2" stroke-dasharray="3 3"/>
-                    <defs>
-                        <linearGradient id="splash-brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#4F46E5" />
-                            <stop offset="1" stop-color="#06B6D4" />
-                        </linearGradient>
-                    </defs>
-                </svg>
+                <img src="asset/logo.png" alt="ChurnOptix Logo" width="64" height="64">
             </div>
             <h1 class="splash-title">ChurnOptix <span class="splash-accent">AI</span></h1>
-            <p class="splash-status" id="splash-status-text">Initializing Retention Intelligence Engine...</p>
+            <p class="splash-status" id="splash-status-text" style="display: none;">Initializing Retention Intelligence Engine...</p>
             <div class="splash-progress-track">
                 <div class="splash-progress-fill" id="splash-progress-fill"></div>
             </div>
@@ -46,19 +35,7 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
                 <div class="brand-logo">
-                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
-                        <path d="M9 19C10.5 15.5 13 14 16.5 14C20 14 21.5 16 23 20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                        <path d="M12 24C12.8284 24 13.5 23.3284 13.5 22.5C13.5 21.6716 12.8284 21 12 21C11.1716 21 10.5 21.6716 10.5 22.5C10.5 23.3284 11.1716 24 12 24Z" fill="white"/>
-                        <path d="M20 12C20.8284 12 21.5 11.3284 21.5 10.5C21.5 9.67157 20.8284 9 20 9C19.1716 9 18.5 9.67157 18.5 10.5C18.5 11.3284 19.1716 12 20 12Z" fill="white"/>
-                        <path d="M10 10.5L22 21.5" stroke="white" stroke-width="2" stroke-dasharray="3 3"/>
-                        <defs>
-                            <linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#4F46E5" />
-                                <stop offset="1" stop-color="#06B6D4" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                    <img src="asset/logo.png" alt="ChurnOptix Logo" width="28" height="28">
                 </div>
                 <span class="brand-text">ChurnOptix <span class="brand-sub">AI</span></span>
                 <button class="toggle-sidebar" id="toggle-sidebar-btn" aria-label="Toggle Sidebar">
@@ -481,28 +458,7 @@
                         </form>
                     </div>
 
-                    <!-- Step-State 2: Holographic Processing Workflow Overlay -->
-                    <div id="predict-processing-container" class="phase-container">
-                        <div class="ai-processing-box">
-                            <div class="ai-hologram-wrapper">
-                                <div class="loader-ring outer"></div>
-                                <div class="loader-ring middle"></div>
-                                <div class="loader-ring inner"></div>
-                                <div class="loader-core"><i class="fa-solid fa-brain"></i></div>
-                            </div>
-                            <h2 id="ai-process-text" class="processing-title">Validating Customer Data</h2>
-                            <div class="progress-track">
-                                <div class="progress-fill" id="ai-progress-bar"></div>
-                            </div>
-                            <ul class="process-steps">
-                                <li id="step-1" class="pending"><span class="step-num">1</span> <span class="step-label">Validating Customer Data</span></li>
-                                <li id="step-2" class="pending"><span class="step-num">2</span> <span class="step-label">Analyzing Churn Signals</span></li>
-                                <li id="step-3" class="pending"><span class="step-num">3</span> <span class="step-label">Running Machine Learning Model</span></li>
-                                <li id="step-4" class="pending"><span class="step-num">4</span> <span class="step-label">Calculating Risk Score</span></li>
-                                <li id="step-5" class="pending"><span class="step-num">5</span> <span class="step-label">Generating Recommendations</span></li>
-                            </ul>
-                        </div>
-                    </div>
+
 
                     <!-- Step-State 3: Results Dashboard -->
                     <div id="predict-results-container" class="phase-container">
