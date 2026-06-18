@@ -30,6 +30,69 @@
         </div>
     </div>
 
+    <!-- Churn Prediction Loading Overlay -->
+    <div id="prediction-loader-overlay" class="prediction-loader-overlay">
+        <div class="prediction-loader-card">
+            <!-- Corner tech accents for terminal style -->
+            <div class="corner-accent top-left"></div>
+            <div class="corner-accent top-right"></div>
+            <div class="corner-accent bottom-left"></div>
+            <div class="corner-accent bottom-right"></div>
+            
+            <div class="loader-visual-container">
+                <!-- SVG Telecom Neural Network Grid -->
+                <svg width="200" height="200" viewBox="0 0 200 200" class="telecom-network-svg">
+                    <defs>
+                        <!-- Glow filters and gradients -->
+                        <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#10b981" stop-opacity="0.3" />
+                            <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Network connections -->
+                    <line x1="100" y1="20" x2="100" y2="180" class="net-grid-line" />
+                    <line x1="20" y1="100" x2="180" y2="100" class="net-grid-line" />
+                    <line x1="43" y1="43" x2="157" y2="157" class="net-grid-line" />
+                    <line x1="43" y1="157" x2="157" y2="43" class="net-grid-line" />
+                    
+                    <!-- Concentric communication orbits -->
+                    <circle cx="100" cy="100" r="45" class="network-orbit orbit-inner" />
+                    <circle cx="100" cy="100" r="75" class="network-orbit orbit-outer" />
+                    
+                    <!-- Glowing pulsing center area -->
+                    <circle cx="100" cy="100" r="30" fill="url(#hubGlow)" class="hub-pulse" />
+                    
+                    <!-- Orbiting telecom packets (nodes) -->
+                    <!-- Inner orbiting node -->
+                    <g class="orbit-rotate-cw">
+                        <circle cx="100" cy="55" r="5" class="data-packet inner-packet" />
+                    </g>
+                    <!-- Outer orbiting node -->
+                    <g class="orbit-rotate-ccw">
+                        <circle cx="100" cy="25" r="6" class="data-packet outer-packet" />
+                    </g>
+                    
+                    <!-- Center core static node -->
+                    <circle cx="100" cy="100" r="16" class="network-hub-core" />
+                </svg>
+                
+                <!-- Overlay FontAwesome icon on the central hub -->
+                <div class="center-hub-icon">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+            </div>
+            
+            <div class="loader-text-details">
+                <h4 class="loader-brand-title">ChurnOptix <span class="accent-text">AI™</span></h4>
+                <p class="loader-status-text" id="predict-loader-status">Initializing telemetry ingestion...</p>
+                <div class="loader-progress-track">
+                    <div class="loader-progress-fill" id="predict-loader-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="app-layout">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">

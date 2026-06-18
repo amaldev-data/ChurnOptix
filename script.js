@@ -92,6 +92,11 @@ const app = {
         this.splashStatus = document.getElementById('splash-status-text');
         this.splashProgress = document.getElementById('splash-progress-fill');
 
+        // Prediction Loader Screen
+        this.predictLoader = document.getElementById('prediction-loader-overlay');
+        this.predictLoaderStatus = document.getElementById('predict-loader-status');
+        this.predictLoaderProgress = document.getElementById('predict-loader-progress');
+
         // Layout Shell
         this.sidebar = document.getElementById('sidebar');
         this.btnToggleSidebar = document.getElementById('toggle-sidebar-btn');
@@ -644,20 +649,79 @@ const app = {
             TotalCharges: parseFloat(this.inputs.TotalCharges.value)
         };
 
-        let apiResult = null;
-        try {
-            apiResult = await this.triggerPredictionApi(payload);
-        } catch (error) {
-            console.warn("FastAPI prediction error. Initiating simulated neural-inference fallback...");
-            apiResult = this.computeSimulationInference(payload);
+        // Reset and display the sleek full-screen prediction loader overlay
+        if (this.predictLoader) {
+            this.predictLoader.classList.add('active');
+            if (this.predictLoaderProgress) this.predictLoaderProgress.style.width = '0%';
+            if (this.predictLoaderStatus) {
+                this.predictLoaderStatus.innerText = "Ingesting customer profile telemetries...";
+                this.predictLoaderStatus.style.opacity = '1';
+            }
         }
 
-        // Hide Form and directly display Results Screen
+        // Fire prediction API request in the background
+        const apiPromise = (async () => {
+            try {
+                return await this.triggerPredictionApi(payload);
+            } catch (error) {
+                console.warn("FastAPI prediction error. Initiating simulated neural-inference fallback...", error);
+                return this.computeSimulationInference(payload);
+            }
+        })();
+
+        // Run the high-fidelity 1-second (1000ms) loading sequence in parallel
+        const loaderPromise = new Promise((resolve) => {
+            const statusTexts = [
+                "Ingesting customer profile telemetries...",
+                "Mapping multi-dimensional service parameters...",
+                "Executing random forest ensemble pathways...",
+                "Synthesizing retention risk coefficients..."
+            ];
+            let progress = 0;
+            let currentTextIndex = 0;
+            
+            // Smoothly increment progress bar to 100% (10ms * 100 steps = 1000ms)
+            const progressInterval = setInterval(() => {
+                progress += 1;
+                if (this.predictLoaderProgress) {
+                    this.predictLoaderProgress.style.width = progress + '%';
+                }
+
+                // Cycle status text at 25%, 50%, 75% progress milestones
+                let textIndex = Math.floor(progress / 25);
+                if (textIndex >= statusTexts.length) textIndex = statusTexts.length - 1;
+                
+                if (textIndex !== currentTextIndex) {
+                    currentTextIndex = textIndex;
+                    if (this.predictLoaderStatus) {
+                        this.predictLoaderStatus.style.opacity = '0';
+                        setTimeout(() => {
+                            if (this.predictLoaderStatus) {
+                                this.predictLoaderStatus.innerText = statusTexts[currentTextIndex];
+                                this.predictLoaderStatus.style.opacity = '1';
+                            }
+                        }, 150);
+                    }
+                }
+
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    resolve();
+                }
+            }, 10);
+        });
+
+        // Wait for both the loading animation and API inference to complete
+        const [apiResult] = await Promise.all([apiPromise, loaderPromise]);
+
+        // Hide prediction loader overlay with smooth fade out
+        if (this.predictLoader) {
+            this.predictLoader.classList.remove('active');
+        }
+
+        // Transition views and render prediction dashboard results
         this.formContainer.classList.remove('active-phase');
-        
-        // Render Inferences in Results Dashboard
         this.renderPredictionResults(payload, apiResult);
-        
         this.resultsContainer.classList.add('active-phase');
 
         // Reset classes for results stagger reveal
