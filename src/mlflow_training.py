@@ -1,57 +1,65 @@
+import os
+from pathlib import Path
 import mlflow
 import mlflow.sklearn
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-import os
 
-os.makedirs("mlruns", exist_ok=True)
+BASE_DIR = Path(__file__).resolve().parent.parent
+MLRUNS_DIR = BASE_DIR / "mlruns"
+DATA_PATH = BASE_DIR / "data" / "churn_data.csv"
 
-mlflow.set_tracking_uri("file:./mlruns")
-import os
-
+MLRUNS_DIR.mkdir(parents=True, exist_ok=True)
+mlflow.set_tracking_uri(MLRUNS_DIR.as_uri())
 os.environ["MLFLOW_ALLOW_FILE_STORE"] = "true"
 print("Tracking URI:", mlflow.get_tracking_uri())
+
 # Start MLflow experiment
 mlflow.set_experiment(
     "Customer Churn Prediction"
 )
 
 # Load dataset
-df = pd.read_csv(
-    "data/churn_data.csv"
-)
+df = pd.read_csv(DATA_PATH)
 
-# Encode categorical columns
-categorical_cols = df.select_dtypes(
-    include=["object"]
-).columns
+# Fix Telco churn specific quirk: Convert blank strings in TotalCharges to numeric
+if "TotalCharges" in df.columns:
+    df["TotalCharges"] = pd.to_numeric(
+        df["TotalCharges"].replace(" ", "0"),
+        errors="coerce"
+    ).fillna(0)
 
-encoder = LabelEncoder()
-
-for col in categorical_cols:
-
-    df[col] = encoder.fit_transform(
-        df[col]
-    )
+# Drop customerID identifier to avoid overfitting
+df.drop("customerID", axis=1, inplace=True, errors="ignore")
 
 # Features and Target
-X = df.drop(
-    "Churn",
-    axis=1
-)
-
+X = df.drop("Churn", axis=1)
 y = df["Churn"]
 
-# Split Data
+# Target encoding (1D target label)
+target_encoder = LabelEncoder()
+y_encoded = target_encoder.fit_transform(y)
+
+# Categorical feature encoding using OrdinalEncoder (2D feature matrix)
+categorical_cols = X.select_dtypes(
+    include=["object", "bool"]
+).columns.tolist()
+
+if categorical_cols:
+    feature_encoder = OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)
+    X[categorical_cols] = feature_encoder.fit_transform(X[categorical_cols])
+
+# Split Data with stratification
 X_train, X_test, y_train, y_test = train_test_split(
     X,
-    y,
+    y_encoded,
     test_size=0.2,
-    random_state=42
+    random_state=42,
+    stratify=y_encoded
 )
 
 # Start MLflow Run

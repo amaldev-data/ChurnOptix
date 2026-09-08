@@ -1,7 +1,15 @@
+from pathlib import Path
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
 import joblib
+
+# =====================================================
+# PATH CONFIGURATION
+# =====================================================
+BASE_DIR = Path(__file__).resolve().parent.parent
+MODELS_DIR = BASE_DIR / "models"
 
 # =====================================================
 # CREATE FASTAPI APP
@@ -11,12 +19,21 @@ app = FastAPI(
     version="1.0"
 )
 
+# Enable CORS for browser frontend integration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # =====================================================
 # LOAD MODEL & PIPELINE
 # =====================================================
-model = joblib.load("models/churn_model.pkl")
-preprocessor = joblib.load("models/preprocessor.pkl")
-feature_columns = joblib.load("models/feature_columns.pkl")
+model = joblib.load(MODELS_DIR / "churn_model.pkl")
+preprocessor = joblib.load(MODELS_DIR / "preprocessor.pkl")
+feature_columns = joblib.load(MODELS_DIR / "feature_columns.pkl")
 
 # =====================================================
 # REQUEST SCHEMA
